@@ -49,7 +49,32 @@ class SocialNetwork {
   }
 
   getRecommendedFollows(userID, degrees) {
-    // Your code here
+    // const getNeighbors = function(node, graph) {
+    //   return graph[node];
+    // }
+
+    let queue = [[userID]];
+    let visited = new Set();
+    let friends = [];
+
+    while (queue.length !== 0) {
+      let currentPath = queue.shift();
+      let currentNode = currentPath[currentPath.length - 1];
+
+      if (!visited.has(currentNode)) {
+        visited.add(currentNode);
+
+        if (currentPath.length > 2 && currentPath.length <= degrees + 2) {
+          friends.push(currentNode);
+        }
+
+        let neighbors = this.follows[currentNode];
+        neighbors.forEach(neighbor => {
+          queue.push(currentPath.concat(neighbor));
+        });
+      }
+    }
+    return friends;
   }
 }
 
